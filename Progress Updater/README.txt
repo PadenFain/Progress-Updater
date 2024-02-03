@@ -1,0 +1,1 @@
+﻿Progress Updater is a simple WinForms application for keeping track of personal progress through books and games.
