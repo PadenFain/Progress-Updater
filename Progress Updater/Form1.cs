@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Progress_Updater
-{     
+{
     public partial class Form1 : Form
     {
         private string string_to_append;
@@ -28,19 +21,26 @@ namespace Progress_Updater
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string_to_append = textBox1.Text + ", " + comboBox2.Text + ", " + textBox3.Text;
-            if(!File.Exists(path))
+            string_to_append = textBox1.Text + ", " + comboBox2.Text + ", " + textBox3.Text + ", " + textBox2.Text;
+            if (!File.Exists(path))
             {
                 using (StreamWriter sw = File.CreateText(path))
                 {
-                    sw.WriteLine("name, status, rating");
+                    sw.WriteLine("name, status, rating, date");
                 }
             }
-            using(StreamWriter sw = File.AppendText(path))
+            try
             {
-                sw.WriteLine(string_to_append);
+                using (StreamWriter sw = File.AppendText(path))
+                {
+                    sw.WriteLine(string_to_append);
+                }
+                MessageBox.Show("Entry to " + path + " successfully added!");
             }
-            MessageBox.Show("You added " + string_to_append + " to " +  path);
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -56,14 +56,14 @@ namespace Progress_Updater
                 {
                     using (StreamWriter sw = File.CreateText(path))
                     {
-                        sw.WriteLine("name, status, rating");
+                        sw.WriteLine("name, status, rating, date");
                     }
                 }
                 Process.Start(path);
             }
-            catch (Exception except)
+            catch (Exception ex)
             {
-                MessageBox.Show(except.Message);
+                MessageBox.Show(ex.Message);
             }
 
         }
@@ -72,10 +72,15 @@ namespace Progress_Updater
         {
             switch (comboBox1.SelectedIndex)
             {
-                case -1: { path = "";  break; }
+                case -1: { path = ""; break; }
                 case 0: { path = "books.csv"; break; }
                 case 1: { path = "games.csv"; break; }
             }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
