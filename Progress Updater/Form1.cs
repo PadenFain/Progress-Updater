@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -9,9 +10,14 @@ namespace Progress_Updater
     {
         private string string_to_append;
         private string path = "";
+        public List<TextBox> textBoxes = new List<TextBox>();
         public Form1()
         {
             InitializeComponent();
+            // Creating textbox list on boot because C# won't let me add them above
+            textBoxes.Add(textBox1);
+            textBoxes.Add(textBox2);
+            textBoxes.Add(textBox3);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -19,6 +25,7 @@ namespace Progress_Updater
 
         }
 
+        // Submit button method
         private void button1_Click(object sender, EventArgs e)
         {
             string_to_append = textBox1.Text + ", " + comboBox2.Text + ", " + textBox3.Text + ", " + textBox2.Text;
@@ -35,6 +42,11 @@ namespace Progress_Updater
                 {
                     sw.WriteLine(string_to_append);
                 }
+                foreach(var tb in textBoxes)
+                {
+                    tb.Text = "";
+                }
+                comboBox2.SelectedIndex = -1;
                 MessageBox.Show("Entry to " + path + " successfully added!");
             }
             catch (Exception ex)
@@ -43,6 +55,7 @@ namespace Progress_Updater
             }
         }
 
+        // Open Spreadsheet button method
         private void button2_Click(object sender, EventArgs e)
         {
             try
@@ -68,6 +81,7 @@ namespace Progress_Updater
 
         }
 
+        // Assigns path based on selection in dropdown 1
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (comboBox1.SelectedIndex)
@@ -76,11 +90,6 @@ namespace Progress_Updater
                 case 0: { path = "books.csv"; break; }
                 case 1: { path = "games.csv"; break; }
             }
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
